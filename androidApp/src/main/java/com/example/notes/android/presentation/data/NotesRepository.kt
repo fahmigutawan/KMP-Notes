@@ -14,20 +14,30 @@ class NotesRepository @Inject constructor(
 
     suspend fun getAllNotes() = dao.getAll()
 
-    suspend fun insertNotes(
-        id: Int = 0,
+    suspend fun insertNote(
         title: String,
         description: String,
-        createdAt: String,
-        updatedAt: String
+        createdAt: Long,
+        updatedAt: Long?
     ) = dao.insert(
         NoteEntity(
-            id = id,
             title = title,
             description = description,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
+    )
+
+    suspend fun updateNote(
+        id: Int,
+        title: String,
+        description: String,
+        updatedAt: Long
+    ) = dao.update(
+        id = id,
+        title = title,
+        description = description,
+        updatedAt = updatedAt
     )
 
     suspend fun deleteNote(id: Int) = dao.delete(id)

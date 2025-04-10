@@ -1,6 +1,10 @@
 package com.example.notes.android.presentation.component
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,12 +14,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -33,68 +42,82 @@ fun NotesItem(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    onClick: () -> Unit,
-    date: String,
+    createdAt: Long,
+    updatedAt: Long?,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit,
 ) {
     val expand = remember { mutableStateOf(false) }
     ElevatedCard(
         modifier = modifier,
-        onClick = {
-            expand.value = !expand.value
-            onClick()
-        },
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp
         )
     ) {
-        AnimatedContent(expand.value) { _expand ->
-            Column(
-                modifier = Modifier.padding(16.dp)
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Text(
-                    text = description,
-                    maxLines = if (_expand) Int.MAX_VALUE else 1,
-                    overflow = TextOverflow.Clip
-                )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                IconButton(
+                    onClick = { expand.value = !expand.value }
                 ) {
-                    Text(
-                        text = date,
-                        style = MaterialTheme.typography.labelSmall
-                    )
                     Icon(
-                        modifier = Modifier.size(16.dp),
-                        imageVector = Icons.Default.Edit,
+                        imageVector = if (expand.value) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                         contentDescription = ""
                     )
                 }
             }
-        }
-    }
-}
 
-@Preview
-@Composable
-fun PreviewNotesItem(modifier: Modifier = Modifier) {
-    Box(Modifier.background(Color.White)) {
-        NotesItem(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            title = "Ini adalah title",
-            description = "Ini adalah description",
-            date = "xxxxxx",
-            onClick = {
-                //TODO
+            Text(
+                modifier = Modifier
+                    .animateContentSize()
+                    .padding(vertical = 8.dp),
+                text = description,
+                maxLines = if (expand.value) Int.MAX_VALUE else 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = createdAt.toString(),
+                    style = MaterialTheme.typography.labelSmall
+                )
+
+                Row {
+                    IconButton(
+                        onClick = onDeleteClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "",
+                            tint = Color.Red
+                        )
+                    }
+
+                    IconButton(
+                        onClick = onEditClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = ""
+                        )
+                    }
+                }
+
             }
-        )
+        }
     }
 }

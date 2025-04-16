@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.rickclephas.nativecoroutines)
 }
 
 kotlin {
@@ -17,7 +18,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -32,8 +33,12 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.room.runtime)
-//            implementation(libs.room.ktx)
+            implementation(libs.room.sqlite)
         }
+    }
+
+    sourceSets.all {
+        languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
     }
 }
 
@@ -51,4 +56,7 @@ android {
 
 dependencies {
     add("kspAndroid", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
 }

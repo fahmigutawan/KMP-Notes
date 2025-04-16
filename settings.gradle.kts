@@ -5,6 +5,10 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
     }
+
+    plugins {
+        id("com.google.devtools.ksp").version("2.1.20-2.0.0")
+    }
 }
 
 dependencyResolutionManagement {

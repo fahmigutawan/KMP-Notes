@@ -1,9 +1,11 @@
 package com.example.notes.android.presentation.di
 
 import android.content.Context
+import com.example.notes.android.presentation.data.NotesRepository
 import com.example.notes.data.NotesDb
+import com.example.notes.data.NotesDbWrapper
+import com.example.notes.data.NotesSource
 import com.example.notes.data.getDatabaseBuilder
-import com.example.notes.data.getRoomDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +22,15 @@ object MainModule {
         @ApplicationContext context: Context
     ): NotesDb {
         val builder = getDatabaseBuilder(context)
-        return getRoomDatabase(builder)
+        return NotesDbWrapper().getRoomDatabase(builder)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotesRepository(
+        db: NotesDb
+    ): NotesRepository {
+        val source = NotesSource(db)
+        return NotesRepository(source)
     }
 }

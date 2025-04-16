@@ -1,44 +1,36 @@
 package com.example.notes.android.presentation.data
 
-import NoteEntity
-import android.content.Context
-import com.example.notes.data.NotesDb
-import com.example.notes.data.getDatabaseBuilder
-import com.example.notes.data.getRoomDatabase
+import com.example.notes.data.NotesSource
 import javax.inject.Inject
 
 class NotesRepository @Inject constructor(
-    db: NotesDb
-){
-    private val dao = db.notesDao
-
-    suspend fun getAllNotes() = dao.getAll()
+    private val source: NotesSource,
+) {
+    fun getAllNotes() = source.getAllNotes()
 
     suspend fun insertNote(
         title: String,
         description: String,
         createdAt: Long,
-        updatedAt: Long?
-    ) = dao.insert(
-        NoteEntity(
-            title = title,
-            description = description,
-            createdAt = createdAt,
-            updatedAt = updatedAt
-        )
+        updatedAt: Long?,
+    ) = source.insertNote(
+        title = title,
+        description = description,
+        createdAt = createdAt,
+        updatedAt = updatedAt
     )
 
     suspend fun updateNote(
         id: Int,
         title: String,
         description: String,
-        updatedAt: Long
-    ) = dao.update(
+        updatedAt: Long,
+        ) = source.updateNote(
         id = id,
         title = title,
         description = description,
         updatedAt = updatedAt
     )
 
-    suspend fun deleteNote(id: Int) = dao.delete(id)
+    suspend fun deleteNote(id: Int) = source.deleteNote(id)
 }

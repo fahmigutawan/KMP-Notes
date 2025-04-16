@@ -5,11 +5,13 @@ compose = "1.5.4"
 compose-material3 = "1.1.2"
 androidx-activityCompose = "1.8.0"
 room-version = "2.7.0"
+sqlite-bundled="2.5.0"
 ksp = "2.1.20-2.0.0"
 coroutine = "1.10.2"
 roomRuntimeJvm = "2.7.0-rc03"
 hilt = "2.56.1"
 jetbrainsKotlinJvm = "2.1.20"
+nativeCoroutines = "1.0.0-ALPHA-41"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -21,10 +23,12 @@ compose-foundation = { module = "androidx.compose.foundation:foundation", versio
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-version" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-version" }
+room-sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite-bundled" }
 #room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-version" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+rickclephas-nativecoroutines = { module = "com.rickclephas.kmp:nativecoroutines-core", version.ref = "nativeCoroutines" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -34,5 +38,6 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+rickclephas-nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "nativeCoroutines" }

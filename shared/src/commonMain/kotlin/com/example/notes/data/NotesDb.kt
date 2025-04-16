@@ -1,3 +1,5 @@
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+
 package com.example.notes.data
 
 import NoteEntity
@@ -6,6 +8,7 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
@@ -23,13 +26,16 @@ expect object NotesDbFactory:RoomDatabaseConstructor<NotesDb>{
     override fun initialize(): NotesDb
 }
 
-fun getRoomDatabase(
-    builder: RoomDatabase.Builder<NotesDb>
-): NotesDb {
-    return builder
-        .fallbackToDestructiveMigration(true)
-        .setQueryCoroutineContext(Dispatchers.IO)
-        .build()
+class NotesDbWrapper{
+    fun getRoomDatabase(
+        builder: RoomDatabase.Builder<NotesDb>
+    ): NotesDb {
+        return builder
+            .fallbackToDestructiveMigration(true)
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
+    }
 }
 
 
